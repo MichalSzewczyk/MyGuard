@@ -8,39 +8,34 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class WelcomeActivity extends Activity {
-    private Button registerButton;
+public class LoginActivity extends Activity {
     private Button loginButton;
+    private EditText nick;
+    private EditText password;
 
     private void initComponents(){
-        this.registerButton = (Button) findViewById(R.id.register_button);
         this.loginButton = (Button) findViewById(R.id.login_button);
+        this.nick = (EditText) findViewById(R.id.nick_text);
+        this.password = (EditText) findViewById(R.id.password_text);
     }
 
     private void setListeners(){
         this.loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent loginIntent = new Intent(WelcomeActivity.this, null);
-                finish();
-                startActivity(loginIntent);
-            }
-        });
-        this.registerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent registerIntent = new Intent(WelcomeActivity.this, RegisterActivity.class);
+                Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
                 finish();
                 startActivity(registerIntent);
             }
         });
+        this.nick = (EditText) findViewById(R.id.nick_text);
+        this.password = (EditText) findViewById(R.id.password_text);
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_welcome);
-
-        initComponents();
-        setListeners();
+        setContentView(R.layout.activity_login);
+        this.loginButton = (Button) findViewById(R.id.login_button);
     }
 }
