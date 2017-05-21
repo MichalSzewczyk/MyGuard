@@ -16,8 +16,6 @@ public class RegisterActivity extends Activity {
     private EditText iceNumber;
     private EditText phoneNumber;
 
-    
-
     private void initComponents(){
         this.nick = (EditText) findViewById(R.id.nick);
         this.password = (EditText) findViewById(R.id.password);
