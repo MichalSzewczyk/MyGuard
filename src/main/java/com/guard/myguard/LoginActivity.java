@@ -23,19 +23,19 @@ public class LoginActivity extends Activity {
         this.loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
+                Intent registerIntent = new Intent(LoginActivity.this, MapsActivity.class);
                 finish();
                 startActivity(registerIntent);
             }
         });
-        this.nick = (EditText) findViewById(R.id.nick_text);
-        this.password = (EditText) findViewById(R.id.password_text);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        this.loginButton = (Button) findViewById(R.id.login_button);
+        initComponents();
+        setListeners();
+
     }
 }
