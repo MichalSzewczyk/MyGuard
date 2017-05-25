@@ -7,6 +7,8 @@ import com.guard.myguard.services.interfaces.CrimesAnalyser;
 public class CrimesAnalyserImpl implements CrimesAnalyser {
     private Crime[] crimes;
     private final int interval;
+    private static final String COLOR_PATTERN = "#80%s%s00";
+    private static final int MAX_COLOR_VALUE = 255;
 
     public CrimesAnalyserImpl(int maxScaleValue) {
         this.interval = maxScaleValue/DangerLevel.values().length;
@@ -18,10 +20,15 @@ public class CrimesAnalyserImpl implements CrimesAnalyser {
 
     @Override
     public DangerLevel getDangerLevel() {
-        return DangerLevel.getEnumByIntValue(countScaledValue(crimes.length));
+        return DangerLevel.getEnumByIntValue(countScaledValue(crimes.length, interval));
     }
 
-    private int countScaledValue(int value) {
+    @Override
+    public String getColor(int value) {
+        return String.format(COLOR_PATTERN, countScaledValue(value, MAX_COLOR_VALUE), MAX_COLOR_VALUE - countScaledValue(value, MAX_COLOR_VALUE));
+    }
+
+    private int countScaledValue(int value, int interval) {
         int scaled = 0;
         while (scaled * interval >= value)
             scaled++;

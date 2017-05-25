@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -38,7 +39,8 @@ public class MapsActivity extends FragmentActivity
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
-    private static final String URL = "https://data.police.uk/api/crimes-at-location?date=2012-02&lat=52.629729&lng=-1.131592";
+    private static final String URL = "https://data.police.uk/api/stops-street?lat=%s&lng=%s";
+    private static final int MAX_DANGER_VALUE = 100;
 
     private GoogleMap mGoogleMap;
     private SupportMapFragment mapFrag;
@@ -47,7 +49,8 @@ public class MapsActivity extends FragmentActivity
     private Location mLastLocation;
     private Marker mCurrLocationMarker;
     private RestService<Crime> crimeRestService = new JsonRestService<>(URL, Crime.class);
-    private CrimesAnalyser crimesAnalyser = new CrimesAnalyserImpl();
+    private CrimesAnalyser crimesAnalyser = new CrimesAnalyserImpl(MAX_DANGER_VALUE);
+    private RelativeLayout relativeLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +59,11 @@ public class MapsActivity extends FragmentActivity
 
         mapFrag = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFrag.getMapAsync(this);
+        this.relativeLayout = (RelativeLayout) findViewById(R.id.alert_layout);
 
     }
+
+
 
     @Override
     public void onPause() {
@@ -143,6 +149,7 @@ public class MapsActivity extends FragmentActivity
 
         //move map camera
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 30));
+
 
     }
 
