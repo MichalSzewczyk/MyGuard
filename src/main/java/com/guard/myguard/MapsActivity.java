@@ -26,7 +26,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.guard.myguard.model.Crime;
-import com.guard.myguard.services.interfaces.JsonRestService;
+import com.guard.myguard.services.impl.CrimesAnalyserImpl;
+import com.guard.myguard.services.impl.JsonRestService;
+import com.guard.myguard.services.interfaces.CrimesAnalyser;
 import com.guard.myguard.services.interfaces.RestService;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
@@ -45,6 +47,7 @@ public class MapsActivity extends FragmentActivity
     private Location mLastLocation;
     private Marker mCurrLocationMarker;
     private RestService<Crime> crimeRestService = new JsonRestService<>(URL, Crime.class);
+    private CrimesAnalyser crimesAnalyser = new CrimesAnalyserImpl();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
