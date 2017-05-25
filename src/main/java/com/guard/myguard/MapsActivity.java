@@ -2,6 +2,7 @@ package com.guard.myguard;
 
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
@@ -28,8 +29,10 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.guard.myguard.model.Crime;
 import com.guard.myguard.services.impl.CrimesAnalyserImpl;
+import com.guard.myguard.services.impl.CrimesRestApiClientImpl;
 import com.guard.myguard.services.impl.JsonRestService;
 import com.guard.myguard.services.interfaces.CrimesAnalyser;
+import com.guard.myguard.services.interfaces.CrimesRestApiClient;
 import com.guard.myguard.services.interfaces.RestService;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
@@ -39,8 +42,8 @@ public class MapsActivity extends FragmentActivity
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
-    private static final String URL = "https://data.police.uk/api/stops-street?lat=%s&lng=%s";
     private static final int MAX_DANGER_VALUE = 100;
+    private static final double ONE_MILE_IN_METERS = 1609.34;
 
     private GoogleMap mGoogleMap;
     private SupportMapFragment mapFrag;
@@ -48,7 +51,7 @@ public class MapsActivity extends FragmentActivity
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
     private Marker mCurrLocationMarker;
-    private RestService<Crime> crimeRestService = new JsonRestService<>(URL, Crime.class);
+    private CrimesRestApiClient crimesRestApiClient = new CrimesRestApiClientImpl();
     private CrimesAnalyser crimesAnalyser = new CrimesAnalyserImpl(MAX_DANGER_VALUE);
     private RelativeLayout relativeLayout;
 
@@ -144,11 +147,13 @@ public class MapsActivity extends FragmentActivity
         mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
         CircleOptions circleOptions = new CircleOptions();
         circleOptions.center(latLng);
-        circleOptions.radius(100);
+        circleOptions.radius(ONE_MILE_IN_METERS);
         mGoogleMap.addCircle(circleOptions);
 
         //move map camera
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 30));
+        crimesAnalyser.setCrimes(crimesRestApiClient.getCrimesForLocation(latLng.latitude, latLng.longitude));
+        relativeLayout.setBackgroundColor(Color.parseColor(crimesAnalyser.getColor(MAX_DANGER_VALUE)));
 
 
     }
