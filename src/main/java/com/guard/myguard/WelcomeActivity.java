@@ -8,9 +8,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.guard.myguard.database.DBOpenHelper;
+
+import static com.guard.myguard.utils.Utils.login;
+
 public class WelcomeActivity extends Activity {
     private Button registerButton;
     private Button loginButton;
+    private DBOpenHelper openHelper;
 
     private void initComponents(){
         this.registerButton = (Button) findViewById(R.id.register_button);
@@ -21,23 +26,21 @@ public class WelcomeActivity extends Activity {
         this.loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent loginIntent = new Intent(WelcomeActivity.this, LoginActivity.class);
-                finish();
-                startActivity(loginIntent);
+                login(WelcomeActivity.this, LoginActivity.class);
             }
         });
         this.registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent registerIntent = new Intent(WelcomeActivity.this, RegisterActivity.class);
-                finish();
-                startActivity(registerIntent);
+                login(WelcomeActivity.this, RegisterActivity.class);
             }
         });
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.openHelper = new DBOpenHelper(this);
         setContentView(R.layout.activity_welcome);
 
         initComponents();

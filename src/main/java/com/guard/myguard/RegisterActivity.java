@@ -1,12 +1,17 @@
 package com.guard.myguard;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.guard.myguard.database.DBOpenHelper;
+
+import static com.guard.myguard.utils.Utils.login;
 
 public class RegisterActivity extends Activity {
     private Button registerButton;
@@ -15,6 +20,8 @@ public class RegisterActivity extends Activity {
     private EditText passwordAgain;
     private EditText iceNumber;
     private EditText phoneNumber;
+    private DBOpenHelper openHelper;
+
 
     private void initComponents(){
         this.nick = (EditText) findViewById(R.id.nick);
@@ -31,7 +38,8 @@ public class RegisterActivity extends Activity {
             public void onClick(View v) {
                 String validationMessage = buildValidationMessage();
                 if(validationMessage.isEmpty()){
-
+                    openHelper.insertUserValue(nick.getText().toString(), password.getText().toString(), iceNumber.getText().toString(), phoneNumber.getText().toString());
+                    login(RegisterActivity.this, MapsActivity.class);
                 }else{
                     Toast.makeText(RegisterActivity.this, validationMessage, Toast.LENGTH_SHORT).show();
                 }
@@ -68,9 +76,13 @@ public class RegisterActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        this.openHelper = new DBOpenHelper(this);
+
         setContentView(R.layout.activity_register);
         initComponents();
         setListeners();
 
     }
+
+
 }
