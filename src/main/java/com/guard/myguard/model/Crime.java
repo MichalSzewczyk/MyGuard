@@ -1,64 +1,225 @@
 package com.guard.myguard.model;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
+import java.util.HashMap;
+import java.util.Map;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-public final class Crime {
-    public final String category;
-    public final String location_type;
-    public final Location location;
-    public final String context;
-    public final String persistent_id;
-    public final long id;
-    public final String location_subtype;
-    public final String month;
-    public final Outcome_status outcome_status;
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonPropertyOrder({
+        "age_range",
+        "self_defined_ethnicity",
+        "outcome_linked_to_object_of_search",
+        "datetime",
+        "removal_of_more_than_outer_clothing",
+        "operation",
+        "officer_defined_ethnicity",
+        "object_of_search",
+        "involved_person",
+        "gender",
+        "legislation",
+        "location",
+        "outcome",
+        "type",
+        "operation_name"
+})
+public class Crime {
 
-    @JsonCreator
-    public Crime(@JsonProperty("category") String category, @JsonProperty("location_type") String location_type, @JsonProperty("location") Location location, @JsonProperty("context") String context, @JsonProperty("persistent_id") String persistent_id, @JsonProperty("id") long id, @JsonProperty("location_subtype") String location_subtype, @JsonProperty("month") String month, @JsonProperty("outcome_status") Outcome_status outcome_status){
-        this.category = category;
-        this.location_type = location_type;
+    @JsonProperty("age_range")
+    private String ageRange;
+    @JsonProperty("self_defined_ethnicity")
+    private String selfDefinedEthnicity;
+    @JsonProperty("outcome_linked_to_object_of_search")
+    private Object outcomeLinkedToObjectOfSearch;
+    @JsonProperty("datetime")
+    private String datetime;
+    @JsonProperty("removal_of_more_than_outer_clothing")
+    private Object removalOfMoreThanOuterClothing;
+    @JsonProperty("operation")
+    private Object operation;
+    @JsonProperty("officer_defined_ethnicity")
+    private String officerDefinedEthnicity;
+    @JsonProperty("object_of_search")
+    private String objectOfSearch;
+    @JsonProperty("involved_person")
+    private Boolean involvedPerson;
+    @JsonProperty("gender")
+    private String gender;
+    @JsonProperty("legislation")
+    private String legislation;
+    @JsonProperty("location")
+    private Location location;
+    @JsonProperty("outcome")
+    private String outcome;
+    @JsonProperty("type")
+    private String type;
+    @JsonProperty("operation_name")
+    private Object operationName;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+
+    @JsonProperty("age_range")
+    public String getAgeRange() {
+        return ageRange;
+    }
+
+    @JsonProperty("age_range")
+    public void setAgeRange(String ageRange) {
+        this.ageRange = ageRange;
+    }
+
+    @JsonProperty("self_defined_ethnicity")
+    public String getSelfDefinedEthnicity() {
+        return selfDefinedEthnicity;
+    }
+
+    @JsonProperty("self_defined_ethnicity")
+    public void setSelfDefinedEthnicity(String selfDefinedEthnicity) {
+        this.selfDefinedEthnicity = selfDefinedEthnicity;
+    }
+
+    @JsonProperty("outcome_linked_to_object_of_search")
+    public Object getOutcomeLinkedToObjectOfSearch() {
+        return outcomeLinkedToObjectOfSearch;
+    }
+
+    @JsonProperty("outcome_linked_to_object_of_search")
+    public void setOutcomeLinkedToObjectOfSearch(Object outcomeLinkedToObjectOfSearch) {
+        this.outcomeLinkedToObjectOfSearch = outcomeLinkedToObjectOfSearch;
+    }
+
+    @JsonProperty("datetime")
+    public String getDatetime() {
+        return datetime;
+    }
+
+    @JsonProperty("datetime")
+    public void setDatetime(String datetime) {
+        this.datetime = datetime;
+    }
+
+    @JsonProperty("removal_of_more_than_outer_clothing")
+    public Object getRemovalOfMoreThanOuterClothing() {
+        return removalOfMoreThanOuterClothing;
+    }
+
+    @JsonProperty("removal_of_more_than_outer_clothing")
+    public void setRemovalOfMoreThanOuterClothing(Object removalOfMoreThanOuterClothing) {
+        this.removalOfMoreThanOuterClothing = removalOfMoreThanOuterClothing;
+    }
+
+    @JsonProperty("operation")
+    public Object getOperation() {
+        return operation;
+    }
+
+    @JsonProperty("operation")
+    public void setOperation(Object operation) {
+        this.operation = operation;
+    }
+
+    @JsonProperty("officer_defined_ethnicity")
+    public String getOfficerDefinedEthnicity() {
+        return officerDefinedEthnicity;
+    }
+
+    @JsonProperty("officer_defined_ethnicity")
+    public void setOfficerDefinedEthnicity(String officerDefinedEthnicity) {
+        this.officerDefinedEthnicity = officerDefinedEthnicity;
+    }
+
+    @JsonProperty("object_of_search")
+    public String getObjectOfSearch() {
+        return objectOfSearch;
+    }
+
+    @JsonProperty("object_of_search")
+    public void setObjectOfSearch(String objectOfSearch) {
+        this.objectOfSearch = objectOfSearch;
+    }
+
+    @JsonProperty("involved_person")
+    public Boolean getInvolvedPerson() {
+        return involvedPerson;
+    }
+
+    @JsonProperty("involved_person")
+    public void setInvolvedPerson(Boolean involvedPerson) {
+        this.involvedPerson = involvedPerson;
+    }
+
+    @JsonProperty("gender")
+    public String getGender() {
+        return gender;
+    }
+
+    @JsonProperty("gender")
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    @JsonProperty("legislation")
+    public String getLegislation() {
+        return legislation;
+    }
+
+    @JsonProperty("legislation")
+    public void setLegislation(String legislation) {
+        this.legislation = legislation;
+    }
+
+    @JsonProperty("location")
+    public Location getLocation() {
+        return location;
+    }
+
+    @JsonProperty("location")
+    public void setLocation(Location location) {
         this.location = location;
-        this.context = context;
-        this.persistent_id = persistent_id;
-        this.id = id;
-        this.location_subtype = location_subtype;
-        this.month = month;
-        this.outcome_status = outcome_status;
     }
 
-    public static final class Location {
-        public final String latitude;
-        public final Street street;
-        public final String longitude;
-
-        @JsonCreator
-        public Location(@JsonProperty("latitude") String latitude, @JsonProperty("street") Street street, @JsonProperty("longitude") String longitude){
-            this.latitude = latitude;
-            this.street = street;
-            this.longitude = longitude;
-        }
-
-        public static final class Street {
-            public final long id;
-            public final String name;
-
-            @JsonCreator
-            public Street(@JsonProperty("id") long id, @JsonProperty("name") String name){
-                this.id = id;
-                this.name = name;
-            }
-        }
+    @JsonProperty("outcome")
+    public String getOutcome() {
+        return outcome;
     }
 
-    public static final class Outcome_status {
-        public final String category;
-        public final String date;
-
-        @JsonCreator
-        public Outcome_status(@JsonProperty("category") String category, @JsonProperty("date") String date){
-            this.category = category;
-            this.date = date;
-        }
+    @JsonProperty("outcome")
+    public void setOutcome(String outcome) {
+        this.outcome = outcome;
     }
+
+    @JsonProperty("type")
+    public String getType() {
+        return type;
+    }
+
+    @JsonProperty("type")
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    @JsonProperty("operation_name")
+    public Object getOperationName() {
+        return operationName;
+    }
+
+    @JsonProperty("operation_name")
+    public void setOperationName(Object operationName) {
+        this.operationName = operationName;
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
+    }
+
+    @JsonAnySetter
+    public void setAdditionalProperty(String name, Object value) {
+        this.additionalProperties.put(name, value);
+    }
+
 }
