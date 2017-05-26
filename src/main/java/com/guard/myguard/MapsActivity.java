@@ -2,7 +2,6 @@ package com.guard.myguard;
 
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.location.Location;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
@@ -10,6 +9,9 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.telephony.SmsManager;
+import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -28,16 +30,14 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.guard.myguard.model.Crime;
 import com.guard.myguard.services.impl.CrimesAnalyserImpl;
 import com.guard.myguard.services.impl.CrimesRestApiClientImpl;
-import com.guard.myguard.services.impl.JsonRestService;
 import com.guard.myguard.services.interfaces.CrimesAnalyser;
 import com.guard.myguard.services.interfaces.CrimesRestApiClient;
-import com.guard.myguard.services.interfaces.RestService;
 import com.guard.myguard.tasks.CrimesAsyncTask;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static android.Manifest.permission.SEND_SMS;
 
 public class MapsActivity extends FragmentActivity
         implements OnMapReadyCallback,
@@ -46,6 +46,7 @@ public class MapsActivity extends FragmentActivity
         LocationListener {
     private static final int MAX_DANGER_VALUE = 100;
     private static final double ONE_MILE_IN_METERS = 1609.34;
+    private static final String SMS_MESSAGE = "I'm in danger, please help me!\nMy position is\n\tLatitude: %s\n\tLongitude: %s";
 
     private GoogleMap mGoogleMap;
     private SupportMapFragment mapFrag;
@@ -57,6 +58,8 @@ public class MapsActivity extends FragmentActivity
     private CrimesAnalyser crimesAnalyser = new CrimesAnalyserImpl(MAX_DANGER_VALUE);
     private RelativeLayout relativeLayout;
     private Button emergencyButton;
+    //TODO: change the number
+    private String emergencyContactNumber = "604070739";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +70,32 @@ public class MapsActivity extends FragmentActivity
         mapFrag.getMapAsync(this);
         this.relativeLayout = (RelativeLayout) findViewById(R.id.alert_layout);
         this.emergencyButton = (Button) findViewById(R.id.sms_button);
+        this.emergencyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+
+                    if (checkSelfPermission(SEND_SMS)
+                            == PackageManager.PERMISSION_DENIED) {
+
+                        Log.d("permission", "permission denied to SEND_SMS - requesting it");
+                        String[] permissions = {SEND_SMS};
+
+                        requestPermissions(permissions, 1);
+
+                    }
+                }
+                if(mLastLocation == null) {
+                    Toast.makeText(MapsActivity.this, "Location unavailable.", Toast.LENGTH_LONG).show();
+                }else{
+                    sendEmergencySms(
+                        String.format(
+                                SMS_MESSAGE, mLastLocation.getLatitude(), mLastLocation.getLongitude())
+                        , emergencyContactNumber);
+                    Toast.makeText(MapsActivity.this, "Message sent.", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 
 
@@ -229,5 +258,9 @@ public class MapsActivity extends FragmentActivity
             // other 'case' lines to check for other
             // permissions this app might request
         }
+    }
+
+    void sendEmergencySms(String messageToSend, String number) {
+        SmsManager.getDefault().sendTextMessage(number, null, messageToSend, null, null);
     }
 }

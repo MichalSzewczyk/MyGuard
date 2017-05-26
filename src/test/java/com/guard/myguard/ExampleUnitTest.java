@@ -1,6 +1,6 @@
 package com.guard.myguard;
 
-import com.guard.myguard.model.Crime;
+import com.guard.myguard.model.rest.Crime;
 import com.guard.myguard.services.impl.JsonRestService;
 import com.guard.myguard.services.interfaces.RestService;
 
