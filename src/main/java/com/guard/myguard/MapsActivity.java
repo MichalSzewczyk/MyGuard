@@ -34,6 +34,7 @@ import com.guard.myguard.services.impl.JsonRestService;
 import com.guard.myguard.services.interfaces.CrimesAnalyser;
 import com.guard.myguard.services.interfaces.CrimesRestApiClient;
 import com.guard.myguard.services.interfaces.RestService;
+import com.guard.myguard.tasks.CrimesAsyncTask;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
@@ -151,10 +152,8 @@ public class MapsActivity extends FragmentActivity
         mGoogleMap.addCircle(circleOptions);
 
         //move map camera
-        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 30));
-        crimesAnalyser.setCrimes(crimesRestApiClient.getCrimesForLocation(latLng.latitude, latLng.longitude));
-        relativeLayout.setBackgroundColor(Color.parseColor(crimesAnalyser.getColor(MAX_DANGER_VALUE)));
-
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 25));
+        new CrimesAsyncTask(relativeLayout, mGoogleMap, crimesAnalyser, crimesRestApiClient, MAX_DANGER_VALUE).execute(latLng.latitude, latLng.longitude);
 
     }
 
