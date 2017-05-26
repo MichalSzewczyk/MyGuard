@@ -1,6 +1,6 @@
 package com.guard.myguard.services.impl;
 
-import com.guard.myguard.model.Crime;
+import com.guard.myguard.model.rest.Crime;
 import com.guard.myguard.services.interfaces.CrimesRestApiClient;
 import com.guard.myguard.services.interfaces.RestService;
 

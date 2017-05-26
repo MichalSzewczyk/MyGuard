@@ -1,9 +1,6 @@
 package com.guard.myguard.services.impl;
 
-import android.util.Log;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.guard.myguard.model.Crime;
 import com.guard.myguard.services.interfaces.RestService;
 
 import java.io.BufferedReader;

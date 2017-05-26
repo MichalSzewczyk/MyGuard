@@ -1,4 +1,4 @@
-package com.guard.myguard.model;
+package com.guard.myguard.model.rest;
 
 import java.util.HashMap;
         import java.util.Map;

@@ -3,7 +3,7 @@ package com.guard.myguard.services.impl;
 import android.util.Log;
 
 import com.guard.myguard.DangerLevel;
-import com.guard.myguard.model.Crime;
+import com.guard.myguard.model.rest.Crime;
 import com.guard.myguard.services.interfaces.CrimesAnalyser;
 
 public class CrimesAnalyserImpl implements CrimesAnalyser {
@@ -19,6 +19,11 @@ public class CrimesAnalyserImpl implements CrimesAnalyser {
 
     public void setCrimes(Crime[] crimes) {
         this.crimes = crimes;
+    }
+
+    @Override
+    public Crime[] getCrimes() {
+        return crimes;
     }
 
     @Override
