@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -55,6 +56,7 @@ public class MapsActivity extends FragmentActivity
     private CrimesRestApiClient crimesRestApiClient = new CrimesRestApiClientImpl();
     private CrimesAnalyser crimesAnalyser = new CrimesAnalyserImpl(MAX_DANGER_VALUE);
     private RelativeLayout relativeLayout;
+    private Button emergencyButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +66,7 @@ public class MapsActivity extends FragmentActivity
         mapFrag = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFrag.getMapAsync(this);
         this.relativeLayout = (RelativeLayout) findViewById(R.id.alert_layout);
-
+        this.emergencyButton = (Button) findViewById(R.id.sms_button);
     }
 
 
