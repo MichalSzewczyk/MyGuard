@@ -25,7 +25,7 @@ public class JsonRestService<T> implements RestService<T> {
     public String getJsonForRequest(String request) {
         try {
 
-            URL url = new URL(urlAddress);
+            URL url = new URL(urlAddress+request);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/json");
