@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBOpenHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "user_db";
-    private static final int DB_VERSION = 0;
+    private static final int DB_VERSION = 1;
     public static final String TABLE_NAME = "personal_data";
     public static final String COLUMN_NICK_TITLE = "nick";
     public static final String COLUMN_PASSWORD_TITLE = "password";
@@ -36,7 +36,7 @@ public class DBOpenHelper extends SQLiteOpenHelper {
                 COLUMN_NICK_TITLE + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_PASSWORD_TITLE + " TEXT NOT NULL, " +
                 COLUMN_ICE_NUMBER_TITLE + " TEXT NOT NULL, " +
-                COLUMN_PHONE_NUMBER_TITLE + " TEXT NOT NULL, " +
+                COLUMN_PHONE_NUMBER_TITLE + " TEXT NOT NULL" +
                 ")");
     }
 
