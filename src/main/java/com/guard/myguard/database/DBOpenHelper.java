@@ -10,18 +10,19 @@ public class DBOpenHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "user_db";
     private static final int DB_VERSION = 0;
-    public static final String COL_ID = "_ID";
-    public static final String COL_NAME = "NAME";
-    public static final String COL_SURNAME = "SURNAME";
-    public static final String KIDS_TABLE_NAME = "CRED";
-    public static final String CLOTHES_TABLE_NAME = "CLOTHES";
-    public static final String COL_COAT = "COAT";
-    public static final String COL_CAP = "CAP";
-    public static final String COL_VEST = "VEST";
-    public static final String COL_SHOES = "SHOES";
-    public static final String COL_POLAR = "POLAR";
-    public static final String COL_GLOVES = "GLOVES";
-    public static final String COL_SHORTS = "SHORTS";
+    public static final String TABLE_NAME = "personal_data";
+    public static final String COLUMN_NICK_TITLE = "nick";
+    public static final String COLUMN_PASSWORD_TITLE = "password";
+    public static final String COLUMN_ICE_NUMBER_TITLE = "ice_number";
+    public static final String COLUMN_PHONE_NUMBER_TITLE = "phone_number";
+    public static final String SQL_CREATE_ENTRIES =
+            "CREATE TABLE " + TABLE_NAME + " (" +
+                    COLUMN_NICK_TITLE + " TEXT," +
+                    COLUMN_PASSWORD_TITLE + " TEXT," +
+                    COLUMN_ICE_NUMBER_TITLE + " TEXT," +
+                    COLUMN_PHONE_NUMBER_TITLE + " TEXT)";
+    public static final String SQL_DELETE_ENTRIES =
+            "DROP TABLE IF EXISTS " + TABLE_NAME;
 
 
     public DBOpenHelper(Context context) {
@@ -31,71 +32,34 @@ public class DBOpenHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE " + KIDS_TABLE_NAME + "( " +
-                COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COL_NAME + " TEXT NOT NULL, " +
-                COL_SURNAME + " TEXT NOT NULL, " +
+        db.execSQL("CREATE TABLE " + TABLE_NAME + "( " +
+                COLUMN_NICK_TITLE + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_PASSWORD_TITLE + " TEXT NOT NULL, " +
+                COLUMN_ICE_NUMBER_TITLE + " TEXT NOT NULL, " +
+                COLUMN_PHONE_NUMBER_TITLE + " TEXT NOT NULL, " +
                 ")");
-
-        db.execSQL("CREATE TABLE " + CLOTHES_TABLE_NAME + "( " +
-                COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COL_COAT + " BOOLEAN NOT NULL, " +
-                COL_CAP + " BOOLEAN NOT NULL, " +
-                COL_VEST + " BOOLEAN NOT NULL, " +
-                COL_SHOES + " BOOLEAN NOT NULL, " +
-                COL_POLAR + " BOOLEAN NOT NULL, " +
-                COL_GLOVES + " BOOLEAN NOT NULL, " +
-                COL_SHORTS + " BOOLEAN NOT NULL " +
-                ")");
-
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + KIDS_TABLE_NAME);
-        db.execSQL("DROP TABLE IF EXISTS " + CLOTHES_TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         this.onCreate(db);
     }
 
-    public boolean insertClothesValue(boolean coat, boolean cap, boolean vest, boolean shoes, boolean polar, boolean gloves, boolean shorts) {
+    public boolean insertUserValue(String nick, String password, String iceNumber, String userNumber) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COL_COAT, coat);
-        contentValues.put(COL_CAP, cap);
-        contentValues.put(COL_VEST, vest);
-        contentValues.put(COL_SHOES, shoes);
-        contentValues.put(COL_POLAR, polar);
-        contentValues.put(COL_GLOVES, gloves);
-        contentValues.put(COL_SHORTS, shorts);
-        return db.insert(CLOTHES_TABLE_NAME, null, contentValues) != -1;
-    }
+        contentValues.put(COLUMN_NICK_TITLE, nick);
+        contentValues.put(COLUMN_PASSWORD_TITLE, password);
+        contentValues.put(COLUMN_ICE_NUMBER_TITLE, iceNumber);
+        contentValues.put(COLUMN_PHONE_NUMBER_TITLE, userNumber);
 
-    public boolean insertUserData(String name, String surname) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(COL_NAME, name);
-        contentValues.put(COL_SURNAME, surname);
-        return db.insert(KIDS_TABLE_NAME, null, contentValues) != -1;
+        return db.insert(TABLE_NAME, null, contentValues) != -1;
     }
 
     public Cursor getAllData() {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        return db.rawQuery("SELECT * FROM " + KIDS_TABLE_NAME + " k INNER JOIN "+CLOTHES_TABLE_NAME + " c ON k._id = c._id", null);
+        return db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
     }
-
-//    public boolean updateValue(int id, String name) {
-//        SQLiteDatabase db = this.getWritableDatabase();
-//        ContentValues contentValues = new ContentValues();
-//        contentValues.put(COL_ID, id);
-//        contentValues.put(COL_NAME, name);
-//        return db.update(TABLE_NAME, contentValues, COL_ID + "=" + id, null) != -1;
-//    }
-
-//    public boolean deleteValue(int id) {
-//        SQLiteDatabase db = this.getWritableDatabase();
-//        return db.delete(TABLE_NAME, COL_ID + "=" + id, null) != -1;
-//    }
-
-
 }
