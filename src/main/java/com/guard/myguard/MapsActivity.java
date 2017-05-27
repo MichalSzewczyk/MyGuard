@@ -21,6 +21,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -44,7 +45,7 @@ public class MapsActivity extends FragmentActivity
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
-    private static final int MAX_DANGER_VALUE = 100;
+    private static final int MAX_DANGER_VALUE = 50;
     private static final double ONE_MILE_IN_METERS = 1609.34;
     private static final String SMS_MESSAGE = "I'm in danger, please help me!\nMy position is\n\tLatitude: %s\n\tLongitude: %s";
 
@@ -85,19 +86,18 @@ public class MapsActivity extends FragmentActivity
 
                     }
                 }
-                if(mLastLocation == null) {
+                if (mLastLocation == null) {
                     Toast.makeText(MapsActivity.this, "Location unavailable.", Toast.LENGTH_LONG).show();
-                }else{
+                } else {
                     sendEmergencySms(
-                        String.format(
-                                SMS_MESSAGE, mLastLocation.getLatitude(), mLastLocation.getLongitude())
-                        , emergencyContactNumber);
+                            String.format(
+                                    SMS_MESSAGE, mLastLocation.getLatitude(), mLastLocation.getLongitude())
+                            , emergencyContactNumber);
                     Toast.makeText(MapsActivity.this, "Message sent.", Toast.LENGTH_LONG).show();
                 }
             }
         });
     }
-
 
 
     @Override
@@ -114,7 +114,18 @@ public class MapsActivity extends FragmentActivity
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
         mGoogleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+        mGoogleMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
 
+            @Override
+            public View getInfoWindow(Marker marker) {
+                return null;
+            }
+
+            @Override
+            public View getInfoContents(Marker marker) {
+                return null;
+            }
+        });
         //Initialize Google Play Services
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(this,
@@ -181,9 +192,10 @@ public class MapsActivity extends FragmentActivity
         circleOptions.center(latLng);
         circleOptions.radius(ONE_MILE_IN_METERS);
         mGoogleMap.addCircle(circleOptions);
-
+        CameraUpdate zoom = CameraUpdateFactory.zoomTo(15);
         //move map camera
-        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 25));
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        mGoogleMap.animateCamera(zoom);
         new CrimesAsyncTask(relativeLayout, mGoogleMap, crimesAnalyser, crimesRestApiClient, MAX_DANGER_VALUE).execute(latLng.latitude, latLng.longitude);
 
     }

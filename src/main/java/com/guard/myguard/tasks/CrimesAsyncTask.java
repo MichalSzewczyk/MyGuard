@@ -12,12 +12,19 @@ import com.guard.myguard.model.rest.Crime;
 import com.guard.myguard.services.interfaces.CrimesAnalyser;
 import com.guard.myguard.services.interfaces.CrimesRestApiClient;
 
-public class CrimesAsyncTask extends AsyncTask<Double, Void, Void> {
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
+
+public class CrimesAsyncTask extends AsyncTask<Double, Void, Crime[]> {
     private final RelativeLayout relativeLayout;
     private final GoogleMap mGoogleMap;
     private final CrimesAnalyser crimesAnalyser;
     private final CrimesRestApiClient crimesRestApiClient;
     private final int maxValue;
+    private static final String CRIME_INFO = "Date: %s\nGender: %s\nAge range: %s\nPlace: %s\nLegislation: %s\nCrime:%s";
 
     public CrimesAsyncTask(RelativeLayout relativeLayout, GoogleMap mGoogleMap, CrimesAnalyser crimesAnalyser, CrimesRestApiClient crimesRestApiClient, int maxValue) {
         this.relativeLayout = relativeLayout;
@@ -28,24 +35,46 @@ public class CrimesAsyncTask extends AsyncTask<Double, Void, Void> {
     }
 
     @Override
-    protected Void doInBackground(Double... params) {
-        crimesAnalyser.setCrimes(crimesRestApiClient.getCrimesForLocation(params[0], params[1]));
-        return null;
+    protected Crime[] doInBackground(Double... params) {
+        List<Crime> crimeList = new ArrayList<>();
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        for (int i = 1; i < 13; i++) {
+            if(month == 0){
+                year--;
+                month+=12;
+
+            }
+            String actual = year + "-" + String.format(Locale.ENGLISH, "%02d", (month--));
+            crimeList.addAll(Arrays.asList(crimesRestApiClient.getCrimesForLocation(params[0], params[1], actual)));
+        }
+        Crime[] crimes = new Crime[crimeList.size()];
+        for (int i = 0 ; i< crimes.length ; i++) {
+            crimes[i] = crimeList.get(i);
+        }
+        return crimes;
     }
 
     @Override
-    protected void onPostExecute(Void aVoid) {
-        super.onPostExecute(aVoid);
+    protected void onPostExecute(Crime[] crimes) {
+        super.onPostExecute(crimes);
+        crimesAnalyser.setCrimes(crimes);
         String color = crimesAnalyser.getColor();
         Log.d("Color", color);
-        relativeLayout.setBackgroundColor(Color.parseColor(color));
-        for(Crime crime : crimesAnalyser.getCrimes()){
+        int c = Color.parseColor(color);
+        Log.i("Parsed color", String.valueOf(c));
+        relativeLayout.setBackgroundColor(c);
+        for (Crime crime : crimesAnalyser.getCrimes()) {
             MarkerOptions markerOptions = new MarkerOptions();
             markerOptions.position(
                     new LatLng(
                             Double.valueOf(crime.getLocation().getLatitude()),
-                            Double.valueOf(crime.getLocation().getLongitude())));
+                            Double.valueOf(crime.getLocation().getLongitude())))
+                    .title(crime.getObjectOfSearch())
+                    .snippet(String.format(CRIME_INFO, crime.getDatetime().substring(0, 10), crime.getGender(), crime.getAgeRange(), crime.getLocation().getStreet(), crime.getLegislation(), crime.getObjectOfSearch()));
             mGoogleMap.addMarker(markerOptions);
+            Log.i("Market inserting", "Inserting marker into position: " + crime.getLocation().getLatitude() + ", " + crime.getLocation().getLongitude());
         }
     }
 }
