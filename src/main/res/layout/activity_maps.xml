@@ -10,8 +10,8 @@
     android:background="@drawable/guard"
     tools:context="com.guard.myguard.LoginActivity"
     android:gravity="center">
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingBottom="@dimen/activity_vertical_margin"
@@ -21,13 +21,47 @@
         android:background="#80ffffff"
         tools:context="com.guard.myguard.LoginActivity"
         android:gravity="center"
-        android:id="@+id/alert_layout">
+        android:id="@+id/alert_layout"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/maps_layout">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/maps_layout"
+                    android:layout_below="@id/alert_layout"
+                    android:gravity="center_vertical|center_horizontal">
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:id="@+id/sms_button"
+                        android:text="emergency sms"
+                        android:textAllCaps="true"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:layout_gravity="center_vertical|center_horizontal"
+                        android:foregroundGravity="center_vertical|center_horizontal"
+                        android:layout_height="15pt" />
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:id="@+id/photo_button"
+                        android:text="capture suspect"
+                        android:textAllCaps="true"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:layout_height="15pt" />
+                </LinearLayout>
+            </TableRow>
 
             <TableRow
                 android:layout_width="match_parent"
@@ -44,18 +78,5 @@
 
         </LinearLayout>
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_alignBottom="@id/maps_layout"
-            android:gravity="bottom|end">
-
-            <Button
-                android:layout_width="match_parent"
-                android:id="@+id/sms_button"
-                android:text="emergency sms"
-                android:textAllCaps="true"
-                android:gravity="bottom|center_vertical|center_horizontal" />
-        </TableRow>
     </RelativeLayout>
 </RelativeLayout>
