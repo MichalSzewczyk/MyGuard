@@ -9,7 +9,7 @@ import com.guard.myguard.services.interfaces.CrimesAnalyser;
 public class CrimesAnalyserImpl implements CrimesAnalyser {
     private Crime[] crimes;
     private final int interval;
-    private static final String COLOR_PATTERN = "#80%s%s00";
+    private static final String COLOR_PATTERN = "#95%s%s00";
     private static final int MAX_COLOR_VALUE = 255;
 
     public CrimesAnalyserImpl(int maxScaleValue) {
@@ -39,6 +39,7 @@ public class CrimesAnalyserImpl implements CrimesAnalyser {
 
     private int countScaledValue(int value) {
         Log.i("Interval * value = ", interval + " * " + value + " = " + interval * value);
-        return interval * value;
+        int result = interval * value;
+        return result < 255 ? result : 255;
     }
 }

@@ -1,5 +1,7 @@
 package com.guard.myguard.services.impl;
 
+import android.util.Log;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.guard.myguard.services.interfaces.RestService;
 
@@ -21,8 +23,9 @@ public class JsonRestService<T> implements RestService<T> {
     @Override
     public String getJsonForRequest(String request) {
         try {
-
-            URL url = new URL(urlAddress+request);
+            String fullUrl = urlAddress+request;
+            Log.i("Result url", fullUrl);
+            URL url = new URL(fullUrl);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/json");
@@ -41,7 +44,7 @@ public class JsonRestService<T> implements RestService<T> {
             while ((output = br.readLine()) != null) {
                 sb.append(output);
             }
-
+            Log.i("Received data", sb.toString());
             conn.disconnect();
             return sb.toString();
         } catch (MalformedURLException e) {
