@@ -32,11 +32,11 @@ public class DBOpenHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE " + TABLE_NAME + "( " +
-                COLUMN_NICK_TITLE + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COLUMN_PASSWORD_TITLE + " TEXT NOT NULL, " +
-                COLUMN_ICE_NUMBER_TITLE + " TEXT NOT NULL, " +
-                COLUMN_PHONE_NUMBER_TITLE + " TEXT NOT NULL" +
+        db.execSQL("CREATE TABLE " + TABLE_NAME + "( \"" +
+                COLUMN_NICK_TITLE + "\" TEXT NOT NULL, \"" +
+                COLUMN_PASSWORD_TITLE + "\" TEXT NOT NULL, \"" +
+                COLUMN_ICE_NUMBER_TITLE + "\" TEXT NOT NULL, \"" +
+                COLUMN_PHONE_NUMBER_TITLE + "\" TEXT NOT NULL" +
                 ")");
     }
 
