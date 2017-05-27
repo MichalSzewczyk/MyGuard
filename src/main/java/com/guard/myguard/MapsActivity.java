@@ -1,6 +1,7 @@
 package com.guard.myguard;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
@@ -59,6 +60,7 @@ public class MapsActivity extends FragmentActivity
     private CrimesAnalyser crimesAnalyser = new CrimesAnalyserImpl(MAX_DANGER_VALUE);
     private RelativeLayout relativeLayout;
     private Button emergencyButton;
+    private Button photoButton;
     //TODO: change the number
     private String emergencyContactNumber = "604070739";
 
@@ -71,6 +73,14 @@ public class MapsActivity extends FragmentActivity
         mapFrag.getMapAsync(this);
         this.relativeLayout = (RelativeLayout) findViewById(R.id.alert_layout);
         this.emergencyButton = (Button) findViewById(R.id.sms_button);
+        this.photoButton = (Button) findViewById(R.id.photo_button);
+        this.photoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MapsActivity.this, PhotoActivity.class);
+                MapsActivity.this.startActivity(intent);
+            }
+        });
         this.emergencyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
