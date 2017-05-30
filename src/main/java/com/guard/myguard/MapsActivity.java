@@ -4,11 +4,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.telephony.SmsManager;
 import android.util.Log;
@@ -38,6 +42,9 @@ import com.guard.myguard.services.interfaces.CrimesAnalyser;
 import com.guard.myguard.services.interfaces.CrimesRestApiClient;
 import com.guard.myguard.tasks.CrimesAsyncTask;
 
+import java.io.File;
+import java.io.IOException;
+
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.Manifest.permission.SEND_SMS;
 
@@ -49,6 +56,7 @@ public class MapsActivity extends FragmentActivity
     private static final int MAX_DANGER_VALUE = 50;
     private static final double ONE_MILE_IN_METERS = 1609.34;
     private static final String SMS_MESSAGE = "I'm in danger, please help me!\nMy position is\n\tLatitude: %s\n\tLongitude: %s";
+    private static final String dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/picFolder/";
 
     private GoogleMap mGoogleMap;
     private SupportMapFragment mapFrag;
@@ -62,6 +70,9 @@ public class MapsActivity extends FragmentActivity
     private Button emergencyButton;
     private Button photoButton;
     //TODO: change the number
+
+    int TAKE_PHOTO_CODE = 0;
+    public static int count = 0;
     private String emergencyContactNumber = "604070739";
 
     @Override
@@ -74,13 +85,35 @@ public class MapsActivity extends FragmentActivity
         this.relativeLayout = (RelativeLayout) findViewById(R.id.alert_layout);
         this.emergencyButton = (Button) findViewById(R.id.sms_button);
         this.photoButton = (Button) findViewById(R.id.photo_button);
-        this.photoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
+
+
+        File newdir = new File(dir);
+        newdir.mkdirs();
+
+        Button capture = (Button) findViewById(R.id.btnCapture);
+        photoButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(MapsActivity.this, PhotoActivity.class);
-                MapsActivity.this.startActivity(intent);
+
+                // Here, the counter will be incremented each time, and the
+                // picture taken by camera will be stored as 1.jpg,2.jpg
+                // and likewise.
+                count++;
+                String file = dir + count + ".jpg";
+                File newfile = new File(file);
+                try {
+                    newfile.createNewFile();
+                } catch (IOException e) {
+                }
+
+                Uri photoURI = FileProvider.getUriForFile(MapsActivity.this, MapsActivity.this.getApplicationContext().getPackageName() + ".provider", newfile);
+
+                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+
+                startActivityForResult(cameraIntent, TAKE_PHOTO_CODE);
             }
         });
+
         this.emergencyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -279,6 +312,28 @@ public class MapsActivity extends FragmentActivity
 
             // other 'case' lines to check for other
             // permissions this app might request
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == TAKE_PHOTO_CODE && resultCode == RESULT_OK) {
+            Log.d("CameraDemo", "Pic saved");
+            Intent i = new Intent(Intent.ACTION_SEND);
+            i.setType("message/rfc822");
+            i.putExtra(Intent.EXTRA_STREAM, Uri.parse(dir+count+".jpg"));
+            i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"recipient@example.com"});
+            i.putExtra(Intent.EXTRA_SUBJECT, "subject of email");
+            i.putExtra(Intent.EXTRA_TEXT   , "body of email");
+            try {
+                startActivity(Intent.createChooser(i, "Send mail..."));
+            } catch (android.content.ActivityNotFoundException ex) {
+                Toast.makeText(this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+            }
+
+
         }
     }
 
