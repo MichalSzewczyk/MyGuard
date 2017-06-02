@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -47,10 +48,10 @@ public class PhotoActivity extends Activity {
                 {
                 }
 
-                Uri outputFileUri = Uri.fromFile(newfile);
+                Uri photoURI = FileProvider.getUriForFile(PhotoActivity.this, PhotoActivity.this.getApplicationContext().getPackageName() + ".provider", newfile);
 
                 Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
 
                 startActivityForResult(cameraIntent, TAKE_PHOTO_CODE);
             }
