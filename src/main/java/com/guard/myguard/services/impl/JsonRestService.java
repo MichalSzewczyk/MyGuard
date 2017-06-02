@@ -16,14 +16,16 @@ public class JsonRestService<T> implements RestService<T> {
     private final String urlAddress;
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final Class<T> serialized;
-    public JsonRestService(String urlAddress, Class<T> serialized){
+
+    public JsonRestService(String urlAddress, Class<T> serialized) {
         this.urlAddress = urlAddress;
         this.serialized = serialized;
     }
+
     @Override
     public String getJsonForRequest(String request) {
         try {
-            String fullUrl = urlAddress+request;
+            String fullUrl = urlAddress + request;
             Log.i("Result url", fullUrl);
             URL url = new URL(fullUrl);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -31,7 +33,7 @@ public class JsonRestService<T> implements RestService<T> {
             conn.setRequestProperty("Accept", "application/json");
 
             if (conn.getResponseCode() != 200) {
-                throw new RuntimeException("Failed : HTTP error code : "
+                Log.e("Failed", "HTTP error code: "
                         + conn.getResponseCode());
             }
 

@@ -39,7 +39,7 @@ public class CrimesAsyncTask extends AsyncTask<Double, Void, Crime[]> {
         List<Crime> crimeList = new ArrayList<>();
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
+        int month = calendar.get(Calendar.MONTH)-1;
         for (int i = 1; i < 13; i++) {
             if(month == 0){
                 year--;
