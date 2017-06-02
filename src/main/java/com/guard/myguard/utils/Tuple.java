@@ -1,10 +1,8 @@
 package com.guard.myguard.utils;
 
-/**
- * Created by DELL on 2017-06-02.
- */
+import java.io.Serializable;
 
-public final class Tuple<K, V> {
+public final class Tuple<K, V> implements Serializable {
     private final K key;
     private final V value;
 
