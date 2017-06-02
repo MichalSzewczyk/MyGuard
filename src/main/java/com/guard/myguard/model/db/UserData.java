@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import java.io.Serializable;
+
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
         "nick",
@@ -11,13 +13,19 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "user_phone",
         "password"
 })
-public class UserData {
+public class UserData implements Serializable {
     @JsonProperty("nick")
     private String nick;
     @JsonProperty("ice_phone")
     private String icePhone;
     @JsonProperty("user_phone")
     private String userPhone;
+
+    public UserData(String nick, String icePhone, String userPhone) {
+        this.nick = nick;
+        this.icePhone = icePhone;
+        this.userPhone = userPhone;
+    }
 
     @JsonProperty("nick")
     public String getNick() {
