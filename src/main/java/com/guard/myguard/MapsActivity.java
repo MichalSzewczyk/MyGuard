@@ -73,7 +73,7 @@ public class MapsActivity extends FragmentActivity
 
     int TAKE_PHOTO_CODE = 0;
     public static int count = 0;
-    private String emergencyContactNumber = "604070739";
+    private String emergencyContactNumber = "5554";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -239,7 +239,7 @@ public class MapsActivity extends FragmentActivity
         //move map camera
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         mGoogleMap.animateCamera(zoom);
-        new CrimesAsyncTask(relativeLayout, mGoogleMap, crimesAnalyser, crimesRestApiClient, MAX_DANGER_VALUE).execute(latLng.latitude, latLng.longitude);
+        new CrimesAsyncTask(this, relativeLayout, mGoogleMap, crimesAnalyser, crimesRestApiClient, MAX_DANGER_VALUE).execute(latLng.latitude, latLng.longitude);
 
     }
 
