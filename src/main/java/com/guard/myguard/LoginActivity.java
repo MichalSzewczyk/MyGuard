@@ -7,11 +7,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import com.guard.myguard.database.DBOpenHelper;
 
 public class LoginActivity extends Activity {
     private Button loginButton;
     private EditText nick;
     private EditText password;
+    private DBOpenHelper openHelper;
 
     private void initComponents(){
         this.loginButton = (Button) findViewById(R.id.login_button);
@@ -23,6 +27,10 @@ public class LoginActivity extends Activity {
         this.loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!openHelper.verifyCredentials(nick.getText().toString(), password.getText().toString(), openHelper.getAllData())){
+                    Toast.makeText(LoginActivity.this, "Invalid credentials", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 Intent registerIntent = new Intent(LoginActivity.this, MapsActivity.class);
                 finish();
                 startActivity(registerIntent);
@@ -33,6 +41,7 @@ public class LoginActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.openHelper = new DBOpenHelper(this);
         setContentView(R.layout.activity_login);
         initComponents();
         setListeners();
