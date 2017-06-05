@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class DBOpenHelper extends SQLiteOpenHelper {
 
@@ -61,5 +62,33 @@ public class DBOpenHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         return db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
+    }
+
+    public boolean isAlreadyInDatabase(String login, Cursor cursor){
+        boolean exists = false;
+        while (!cursor.isAfterLast()) {
+            String[] cols = cursor.getColumnNames();
+            Log.i("login:", cols[0]);
+            if(cols[0].equals(login)){
+                exists = true;
+                break;
+            }
+            cursor.moveToNext();
+        }
+        return exists;
+    }
+
+    public boolean verifyCredentials(String login, String password, Cursor cursor){
+        boolean exists = false;
+        while (!cursor.isAfterLast()) {
+            String[] cols = cursor.getColumnNames();
+            Log.i("login:", cols[0]);
+            if(cols[0].equals(login) && cols[1].equals(password)){
+                exists = true;
+                break;
+            }
+            cursor.moveToNext();
+        }
+        return exists;
     }
 }
