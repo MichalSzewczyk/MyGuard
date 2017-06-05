@@ -1,9 +1,8 @@
 package com.guard.myguard;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,7 +22,7 @@ public class RegisterActivity extends Activity {
     private DBOpenHelper openHelper;
 
 
-    private void initComponents(){
+    private void initComponents() {
         this.nick = (EditText) findViewById(R.id.nick);
         this.password = (EditText) findViewById(R.id.password);
         this.passwordAgain = (EditText) findViewById(R.id.password_again);
@@ -32,44 +31,47 @@ public class RegisterActivity extends Activity {
         this.registerButton = (Button) findViewById(R.id.register_button);
     }
 
-    private void setListeners(){
+    private void setListeners() {
         this.registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String validationMessage = buildValidationMessage();
-                if(validationMessage.isEmpty()){
+                if (validationMessage.isEmpty()) {
+                    if (openHelper.isAlreadyInDatabase(nick.getText().toString(), openHelper.getAllData())) {
+                        Toast.makeText(RegisterActivity.this, "User already in database", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     openHelper.insertUserValue(nick.getText().toString(), password.getText().toString(), iceNumber.getText().toString(), phoneNumber.getText().toString());
                     login(RegisterActivity.this, MapsActivity.class);
-                }else{
+                } else {
                     Toast.makeText(RegisterActivity.this, validationMessage, Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
 
-    private String buildValidationMessage(){
+
+    private String buildValidationMessage() {
         StringBuilder popupMessage = new StringBuilder();
-        if(this.nick.getText().length() == 0) {
+        if (this.nick.getText().length() == 0) {
             popupMessage.append("Empty nick\n");
         }
-        if(this.password.getText().length() == 0) {
+        if (this.password.getText().length() == 0) {
             popupMessage.append("Empty password\n");
         }
-        if(this.phoneNumber.getText().length() == 0) {
+        if (this.phoneNumber.getText().length() == 0) {
             popupMessage.append("Empty phone number\n");
         }
-        if(this.iceNumber.getText().length() == 0) {
+        if (this.iceNumber.getText().length() == 0) {
             popupMessage.append("Empty ice phone number\n");
         }
-        if(this.passwordAgain.getText().length() == 0) {
+        if (this.passwordAgain.getText().length() == 0) {
             popupMessage.append("Empty password again\n");
         }
-        if(!this.passwordAgain.getText().toString().equals(this.password.getText().toString())) {
+        if (!this.passwordAgain.getText().toString().equals(this.password.getText().toString())) {
             popupMessage.append("Passwords are different\n");
         }
         return popupMessage.toString();
-
-
     }
 
     @Override
