@@ -1,5 +1,6 @@
 package com.guard.myguard.activities;
 
+import android.app.Activity;
 import android.app.KeyguardManager;
 import android.content.pm.PackageManager;
 import android.hardware.fingerprint.FingerprintManager;
@@ -35,7 +36,7 @@ import javax.crypto.SecretKey;
 import static com.guard.myguard.enums.ParsingServiceType.CUSTOM_SERVICE;
 import static com.guard.myguard.utils.Utils.showToast;
 
-public class FingerprintActivity extends AppCompatActivity {
+public class FingerprintActivity extends Activity {
 
     private static final String KEY_NAME = "yourKey";
     private Cipher cipher;
