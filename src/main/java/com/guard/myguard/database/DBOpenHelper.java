@@ -10,7 +10,7 @@ import android.util.Log;
 public class DBOpenHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "user_db";
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 2;
     public static final String TABLE_NAME = "personal_data";
     public static final String COLUMN_NICK_TITLE = "nick";
     public static final String COLUMN_PASSWORD_TITLE = "password";
@@ -24,6 +24,8 @@ public class DBOpenHelper extends SQLiteOpenHelper {
                     COLUMN_PHONE_NUMBER_TITLE + " TEXT)";
     public static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + TABLE_NAME;
+    private static final String INSERT_QUERY =
+            "INSERT INTO personal_data(%s,%s,%s,%s) VALUES (%s,%s,%s,%s)";
 
 
     public DBOpenHelper(Context context) {
@@ -49,12 +51,12 @@ public class DBOpenHelper extends SQLiteOpenHelper {
 
     public boolean insertUserValue(String nick, String password, String iceNumber, String userNumber) {
         SQLiteDatabase db = this.getWritableDatabase();
+
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_NICK_TITLE, nick);
         contentValues.put(COLUMN_PASSWORD_TITLE, password);
         contentValues.put(COLUMN_ICE_NUMBER_TITLE, iceNumber);
         contentValues.put(COLUMN_PHONE_NUMBER_TITLE, userNumber);
-
         return db.insert(TABLE_NAME, null, contentValues) != -1;
     }
 
@@ -80,14 +82,20 @@ public class DBOpenHelper extends SQLiteOpenHelper {
 
     public boolean verifyCredentials(String login, String password, Cursor cursor){
         boolean exists = false;
-        while (!cursor.isAfterLast()) {
-            String[] cols = cursor.getColumnNames();
-            Log.i("login:", cols[0]);
-            if(cols[0].equals(login) && cols[1].equals(password)){
-                exists = true;
-                break;
-            }
-            cursor.moveToNext();
+        if (cursor.moveToFirst() ){
+            String[] columnNames = cursor.getColumnNames();
+            do {
+                String nick = cursor.getString(
+                        cursor.getColumnIndex(columnNames[0]));
+                String pass = cursor.getString(
+                        cursor.getColumnIndex(columnNames[1]));
+                Log.i("nick", nick +" "+login);
+                Log.i("pass", pass +" "+password);
+                if(nick.equals(login) && pass.equals(password)){
+                    exists = true;
+                    break;
+                }
+            } while (cursor.moveToNext());
         }
         return exists;
     }
