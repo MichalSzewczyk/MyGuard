@@ -1,4 +1,4 @@
-package com.guard.myguard;
+package com.guard.myguard.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -36,6 +36,7 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.guard.myguard.R;
 import com.guard.myguard.services.impl.CrimesAnalyserImpl;
 import com.guard.myguard.services.impl.CrimesRestApiClientImpl;
 import com.guard.myguard.services.interfaces.CrimesAnalyser;

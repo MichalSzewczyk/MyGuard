@@ -1,4 +1,4 @@
-package com.guard.myguard;
+package com.guard.myguard.enums;
 
 
 import com.guard.myguard.services.interfaces.CustomParsingService;

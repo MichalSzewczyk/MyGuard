@@ -1,4 +1,4 @@
-package com.guard.myguard;
+package com.guard.myguard.enums;
 
 public enum DangerLevel {
     CHILL, GOOD, MEDIUM, HEIGHT, EXTREME, INCREDIBLE, HELL;

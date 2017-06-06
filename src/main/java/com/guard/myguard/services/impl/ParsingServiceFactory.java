@@ -2,7 +2,7 @@ package com.guard.myguard.services.impl;
 
 import android.util.Log;
 
-import com.guard.myguard.ParsingServiceType;
+import com.guard.myguard.enums.ParsingServiceType;
 import com.guard.myguard.services.interfaces.ParsingService;
 
 import java.util.HashMap;

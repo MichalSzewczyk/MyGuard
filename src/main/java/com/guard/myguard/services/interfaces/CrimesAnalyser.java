@@ -1,6 +1,6 @@
 package com.guard.myguard.services.interfaces;
 
-import com.guard.myguard.DangerLevel;
+import com.guard.myguard.enums.DangerLevel;
 import com.guard.myguard.model.rest.Crime;
 
 public interface CrimesAnalyser {

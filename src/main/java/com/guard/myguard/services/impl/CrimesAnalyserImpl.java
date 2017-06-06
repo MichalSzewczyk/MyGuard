@@ -2,7 +2,7 @@ package com.guard.myguard.services.impl;
 
 import android.util.Log;
 
-import com.guard.myguard.DangerLevel;
+import com.guard.myguard.enums.DangerLevel;
 import com.guard.myguard.model.rest.Crime;
 import com.guard.myguard.services.interfaces.CrimesAnalyser;
 

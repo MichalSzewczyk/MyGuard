@@ -1,4 +1,4 @@
-package com.guard.myguard;
+package com.guard.myguard.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,6 +10,8 @@ import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+
+import com.guard.myguard.R;
 
 import java.io.File;
 import java.io.IOException;

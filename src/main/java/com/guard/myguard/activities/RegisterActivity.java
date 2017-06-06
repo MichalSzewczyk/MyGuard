@@ -1,4 +1,4 @@
-package com.guard.myguard;
+package com.guard.myguard.activities;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.guard.myguard.R;
 import com.guard.myguard.database.DBOpenHelper;
 
 import static com.guard.myguard.utils.Utils.login;

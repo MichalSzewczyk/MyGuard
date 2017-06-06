@@ -1,4 +1,4 @@
-package com.guard.myguard;
+package com.guard.myguard.activities;
 
 import android.app.KeyguardManager;
 import android.content.pm.PackageManager;
@@ -12,6 +12,7 @@ import android.security.keystore.KeyProperties;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v4.app.ActivityCompat;
 
+import com.guard.myguard.R;
 import com.guard.myguard.callbacks.FingerprintHandlerCallback;
 import com.guard.myguard.services.impl.ParsingServiceFactory;
 import com.guard.myguard.services.interfaces.ParsingService;
@@ -31,7 +32,7 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 
-import static com.guard.myguard.ParsingServiceType.CUSTOM_SERVICE;
+import static com.guard.myguard.enums.ParsingServiceType.CUSTOM_SERVICE;
 import static com.guard.myguard.utils.Utils.showToast;
 
 public class FingerprintActivity extends AppCompatActivity {
