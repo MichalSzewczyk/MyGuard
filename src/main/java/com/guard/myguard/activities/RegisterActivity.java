@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 import com.guard.myguard.R;
 import com.guard.myguard.database.DBOpenHelper;
+import com.guard.myguard.services.impl.StoredLoginHandler;
+import com.guard.myguard.services.interfaces.LoginHandler;
 
 import static com.guard.myguard.utils.Utils.login;
 
@@ -21,6 +23,7 @@ public class RegisterActivity extends Activity {
     private EditText iceNumber;
     private EditText phoneNumber;
     private DBOpenHelper openHelper;
+    private LoginHandler loginHandler;
 
 
     private void initComponents() {
@@ -30,6 +33,7 @@ public class RegisterActivity extends Activity {
         this.iceNumber = (EditText) findViewById(R.id.ice_number);
         this.phoneNumber = (EditText) findViewById(R.id.phone_number);
         this.registerButton = (Button) findViewById(R.id.register_button);
+        this.loginHandler = new StoredLoginHandler(this);
     }
 
     private void setListeners() {
@@ -43,6 +47,7 @@ public class RegisterActivity extends Activity {
                         return;
                     }
                     openHelper.insertUserValue(nick.getText().toString(), password.getText().toString(), iceNumber.getText().toString(), phoneNumber.getText().toString());
+                    loginHandler.storeCredentials(nick.getText().toString(), password.getText().toString());
                     login(RegisterActivity.this, MapsActivity.class);
                 } else {
                     Toast.makeText(RegisterActivity.this, validationMessage, Toast.LENGTH_SHORT).show();
