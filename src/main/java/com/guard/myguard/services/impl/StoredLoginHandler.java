@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.guard.myguard.activities.MapsActivity;
 import com.guard.myguard.services.interfaces.EncryptionService;
 import com.guard.myguard.services.interfaces.LoginHandler;
 import com.guard.myguard.services.interfaces.ParsingService;
@@ -16,11 +18,13 @@ public class StoredLoginHandler implements LoginHandler {
     private final ParsingService parsingService;
     private final SharedPreferences settings;
     private final EncryptionService encryptionService;
+    private final Context context;
 
     public StoredLoginHandler(Context context) {
-        parsingService = new JsonParsingFacade(new ObjectMapper());
+        this.parsingService = new JsonParsingFacade(new ObjectMapper());
         this.settings = PreferenceManager.getDefaultSharedPreferences(context);
         this.encryptionService = new EncryptionServiceImpl();
+        this.context = context;
     }
 
     @Override
@@ -28,7 +32,7 @@ public class StoredLoginHandler implements LoginHandler {
         String serializedTuple = settings.getString(CRED_KEY, "null");
         Tuple<String, String> deserialized = parsingService.deserialize(serializedTuple, Tuple.class);
         if(deserialized == null){
-            throw new NullPointerException("Deserialization failed");
+            Toast.makeText(context, "Credential data unavailable. \nPlease log in for the first time.", Toast.LENGTH_LONG).show();
         }
         String encrypted = deserialized.getValue();
         String decrypted = encryptionService.decrypt(encrypted);
