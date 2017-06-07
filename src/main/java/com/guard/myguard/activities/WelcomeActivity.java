@@ -23,7 +23,7 @@ public class WelcomeActivity extends Activity {
         this.registerButton = (Button) findViewById(R.id.register_button);
         this.loginButton = (Button) findViewById(R.id.login_button);
         this.fingerprintButton = (Button) findViewById(R.id.fingerprint_button);
-        this.settings = PreferenceManager.getDefaultSharedPreferences(this);
+        this.settings = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
     }
 
     private void setListeners() {
@@ -42,7 +42,7 @@ public class WelcomeActivity extends Activity {
         this.fingerprintButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                login(WelcomeActivity.this, FingerprintActivity.class);
+                login(WelcomeActivity.this, AuthActivity.class);
             }
         });
     }

@@ -26,7 +26,7 @@ public class LoginActivity extends Activity {
         this.loginButton = (Button) findViewById(R.id.login_button);
         this.nick = (EditText) findViewById(R.id.nick_text);
         this.password = (EditText) findViewById(R.id.password_text);
-        this.loginHandler = new StoredLoginHandler(this);
+        this.loginHandler = new StoredLoginHandler(this.getApplicationContext());
     }
 
     private void setListeners(){

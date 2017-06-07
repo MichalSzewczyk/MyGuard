@@ -33,7 +33,7 @@ public class RegisterActivity extends Activity {
         this.iceNumber = (EditText) findViewById(R.id.ice_number);
         this.phoneNumber = (EditText) findViewById(R.id.phone_number);
         this.registerButton = (Button) findViewById(R.id.register_button);
-        this.loginHandler = new StoredLoginHandler(this);
+        this.loginHandler = new StoredLoginHandler(this.getApplicationContext());
     }
 
     private void setListeners() {

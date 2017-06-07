@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.security.keystore.KeyGenParameterSpec;
 import android.security.keystore.KeyPermanentlyInvalidatedException;
 import android.security.keystore.KeyProperties;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v4.app.ActivityCompat;
 
 import com.guard.myguard.R;
@@ -36,7 +35,7 @@ import javax.crypto.SecretKey;
 import static com.guard.myguard.enums.ParsingServiceType.CUSTOM_SERVICE;
 import static com.guard.myguard.utils.Utils.showToast;
 
-public class FingerprintActivity extends Activity {
+public class AuthActivity extends Activity {
 
     private static final String KEY_NAME = "yourKey";
     private Cipher cipher;
@@ -47,14 +46,14 @@ public class FingerprintActivity extends Activity {
     private KeyguardManager keyguardManager;
     private ParsingService parsingService;
 
-    public FingerprintActivity() {
+    public AuthActivity() {
         this.parsingService = ParsingServiceFactory.getService(CUSTOM_SERVICE);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_fingerprint);
+        setContentView(R.layout.activity_auth);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             keyguardManager =
@@ -63,19 +62,19 @@ public class FingerprintActivity extends Activity {
                     (FingerprintManager) getSystemService(FINGERPRINT_SERVICE);
 
             if (!fingerprintManager.isHardwareDetected()) {
-                showToast(FingerprintActivity.this, "Your device doesn't support fingerprint authentication");
+                showToast(AuthActivity.this, "Your device doesn't support fingerprint authentication");
             }
 
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.USE_FINGERPRINT) != PackageManager.PERMISSION_GRANTED) {
-                showToast(FingerprintActivity.this, "Please enable the fingerprint permission");
+                showToast(AuthActivity.this, "Please enable the fingerprint permission");
             }
 
             if (!fingerprintManager.hasEnrolledFingerprints()) {
-                showToast(FingerprintActivity.this, "No fingerprint configured. Please register at least one fingerprint in your device's Settings");
+                showToast(AuthActivity.this, "No fingerprint configured. Please register at least one fingerprint in your device's Settings");
             }
 
             if (!keyguardManager.isKeyguardSecure()) {
-                showToast(FingerprintActivity.this, "Please enable lockscreen security in your device's Settings");
+                showToast(AuthActivity.this, "Please enable lockscreen security in your device's Settings");
             } else {
                 try {
                     generateKey();
@@ -86,7 +85,7 @@ public class FingerprintActivity extends Activity {
                 if (initCipher()) {
                     cryptoObject = new FingerprintManager.CryptoObject(cipher);
 
-                    FingerprintHandlerCallback helper = new FingerprintHandlerCallback(this, parsingService, this);
+                    FingerprintHandlerCallback helper = new FingerprintHandlerCallback(this.getApplicationContext(), parsingService, this);
                     helper.startAuth(fingerprintManager, cryptoObject);
                 }
             }
