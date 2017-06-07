@@ -65,6 +65,10 @@ public class FingerprintHandlerCallback extends FingerprintManager.Authenticatio
                 PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
 
         Tuple<String, String> crud = loginHandler.getStoredCredentials();
+        if(crud == null){
+            Toast.makeText(context, "Credential data unavailable. \nPlease log in for the first time.", Toast.LENGTH_LONG).show();
+            return;
+        }
         UserLoginTask loginTask = new UserLoginTask(crud.getKey(), crud.getValue(), parsingService, activity);
         loginTask.execute();
     }

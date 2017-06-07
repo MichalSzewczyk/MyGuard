@@ -7,6 +7,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.guard.myguard.R;
 import com.guard.myguard.activities.MapsActivity;
 import com.guard.myguard.services.interfaces.EncryptionService;
 import com.guard.myguard.services.interfaces.LoginHandler;
@@ -29,10 +30,10 @@ public class StoredLoginHandler implements LoginHandler {
 
     @Override
     public synchronized Tuple<String, String> getStoredCredentials() {
-        String serializedTuple = settings.getString(CRED_KEY, "null");
+        String serializedTuple = settings.getString(context.getString(R.string.cred), "null");
         Tuple<String, String> deserialized = parsingService.deserialize(serializedTuple, Tuple.class);
         if(deserialized == null){
-            Toast.makeText(context, "Credential data unavailable. \nPlease log in for the first time.", Toast.LENGTH_LONG).show();
+            return null;
         }
         String encrypted = deserialized.getValue();
         String decrypted = encryptionService.decrypt(encrypted);

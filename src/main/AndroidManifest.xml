@@ -2,11 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.guard.myguard">
 
-    <!--
-         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
-         Google Maps Android API v2, but you must specify either coarse or fine
-         location permissions for the 'MyLocation' functionality. android.permission.SEND_SMS
-    -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -35,34 +30,22 @@
             android:theme="@android:style/Theme.Black.NoTitleBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.LoginActivity" />
-        <activity android:name=".activities.RegisterActivity" />
-        <!--
-             The API key for Google Maps-based APIs is defined as a string resource.
-             (See the file "res/values/google_maps_api.xml").
-             Note that the API key is linked to the encryption key used to sign the APK.
-             You need a different API key for each encryption key, including the release key that is used to
-             sign the APK for publishing.
-             You can define the keys for the debug and release targets in src/debug/ and src/release/. 
-        -->
+        <activity android:name="com.guard.myguard.activities.LoginActivity" />
+        <activity android:name="com.guard.myguard.activities.RegisterActivity" />
+        <activity android:name="com.guard.myguard.activities.MapsActivity" />
+        <activity android:name="com.guard.myguard.activities.AuthActivity" />
+        <activity
+            android:name="com.guard.myguard.activities.PhotoActivity"
+            android:exported="true"
+            android:label="@string/title_activity_photo" />
+
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-
-        <activity
-            android:name=".activities.MapsActivity"
-            android:label="@string/title_activity_maps" />
-        <activity
-            android:name=".activities.PhotoActivity"
-            android:exported="true"
-            android:label="@string/title_activity_photo" />
-        <activity
-            android:name=".activities.FingerprintActivity"
-            android:label="@string/title_activity_fingerprint"></activity>
     </application>
 
 </manifest>
