@@ -10,7 +10,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:background="@drawable/guard"
     android:gravity="center"
-    tools:context="com.guard.myguard.activities.RegisterActivity">
+    tools:context="com.guard.myguard.RegisterActivity">
 
     <LinearLayout
         android:orientation="vertical"

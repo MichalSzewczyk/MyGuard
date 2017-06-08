@@ -26,26 +26,30 @@
         </provider>
 
         <activity
-            android:name=".activities.WelcomeActivity"
+            android:name=".WelcomeActivity"
             android:theme="@android:style/Theme.Black.NoTitleBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.guard.myguard.activities.LoginActivity" />
-        <activity android:name="com.guard.myguard.activities.RegisterActivity" />
-        <activity android:name="com.guard.myguard.activities.MapsActivity" />
-        <activity android:name="com.guard.myguard.activities.AuthActivity" />
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".RegisterActivity" />
+        <activity android:name=".MapsActivity" />
+        <activity android:name=".AuthActivity" />
         <activity
-            android:name="com.guard.myguard.activities.PhotoActivity"
+            android:name=".PhotoActivity"
             android:exported="true"
             android:label="@string/title_activity_photo" />
-
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
+
+        <activity
+            android:name=".FingerprintActivity"
+            android:label="@string/title_activity_fingerprint"></activity>
     </application>
 
 </manifest>
