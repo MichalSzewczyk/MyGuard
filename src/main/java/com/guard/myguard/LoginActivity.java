@@ -1,16 +1,13 @@
-package com.guard.myguard.activities;
+package com.guard.myguard;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.guard.myguard.R;
 import com.guard.myguard.database.DBOpenHelper;
 import com.guard.myguard.services.impl.StoredLoginHandler;
 import com.guard.myguard.services.interfaces.LoginHandler;

@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.guard.myguard.activities.MapsActivity;
+import com.guard.myguard.MapsActivity;
 import com.guard.myguard.R;
 import com.guard.myguard.model.db.UserData;
 import com.guard.myguard.services.interfaces.ParsingService;
