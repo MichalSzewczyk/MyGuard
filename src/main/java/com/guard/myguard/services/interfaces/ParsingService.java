@@ -1,7 +1,6 @@
 package com.guard.myguard.services.interfaces;
-import java.io.IOException;
-import java.io.Serializable;
 
+import java.io.Serializable;
 
 
 public interface ParsingService {

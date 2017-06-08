@@ -4,11 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.guard.myguard.R;
-import com.guard.myguard.activities.MapsActivity;
 import com.guard.myguard.services.interfaces.EncryptionService;
 import com.guard.myguard.services.interfaces.LoginHandler;
 import com.guard.myguard.services.interfaces.ParsingService;
@@ -57,6 +55,6 @@ public class StoredLoginHandler implements LoginHandler {
             Log.e("Serialization failed", throwable.toString());
         }
         editor.putString(CRED_KEY, serializedTuple);
-        editor.apply();
+        editor.commit();
     }
 }
