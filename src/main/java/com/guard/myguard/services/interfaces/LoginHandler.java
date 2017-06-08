@@ -1,12 +1,12 @@
 package com.guard.myguard.services.interfaces;
 
 
-import com.guard.myguard.utils.Tuple;
+import com.guard.myguard.model.db.UserData;
 
 public interface LoginHandler {
-    void storeCredentials(String login, String password);
+    void storeCredentials(String nick, String icePhone, String userPhone, String password) ;
 
-    Tuple<String, String> getStoredCredentials();
+    UserData getStoredCredentials();
 
     boolean isDataAvailable();
 }

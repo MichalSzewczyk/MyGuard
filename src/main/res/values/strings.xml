@@ -10,5 +10,6 @@
     <string name="instructions">Use fingerprint detector.</string>
     <string name="user_data">data</string>"cred"
     <string name="cred">cred</string>
-    <string name="title_activity_auth">AuthActivity</string>"
+    <string name="title_activity_auth">AuthActivity</string>
+    <string name="data">data</string>
 </resources>

@@ -27,7 +27,7 @@ public class UserLoginTask extends AsyncTask<Void, Void, UserData> {
 
     @Override
     protected UserData doInBackground(Void... params) {
-        return new UserData("My nick", "Ice pgone", "User phone");
+        return null;
     }
 
     @Override

@@ -7,10 +7,10 @@ import android.util.Log;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.guard.myguard.R;
+import com.guard.myguard.model.db.UserData;
 import com.guard.myguard.services.interfaces.EncryptionService;
 import com.guard.myguard.services.interfaces.LoginHandler;
 import com.guard.myguard.services.interfaces.ParsingService;
-import com.guard.myguard.utils.Tuple;
 
 public class StoredLoginHandler implements LoginHandler {
     private final static String CRED_KEY = "cred";
@@ -27,15 +27,17 @@ public class StoredLoginHandler implements LoginHandler {
     }
 
     @Override
-    public synchronized Tuple<String, String> getStoredCredentials() {
+    public synchronized UserData getStoredCredentials() {
         String serializedTuple = settings.getString(context.getString(R.string.cred), "null");
-        Tuple<String, String> deserialized = parsingService.deserialize(serializedTuple, Tuple.class);
+        Log.i("deserializing", serializedTuple);
+        UserData deserialized = parsingService.deserialize(serializedTuple, UserData.class);
         if(deserialized == null){
             return null;
         }
-        String encrypted = deserialized.getValue();
+        String encrypted = deserialized.getPassword();
         String decrypted = encryptionService.decrypt(encrypted);
-        return new Tuple<>(deserialized.getKey(), decrypted);
+        deserialized.setPassword(decrypted);
+        return deserialized;
     }
 
     @Override
@@ -44,10 +46,10 @@ public class StoredLoginHandler implements LoginHandler {
     }
 
     @Override
-    public synchronized void storeCredentials(String login, String password) {
+    public synchronized void storeCredentials(String nick, String icePhone, String userPhone, String password) {
         SharedPreferences.Editor editor = settings.edit();
         String encodedPassword = encryptionService.encode(password);
-        Tuple tuple = new Tuple<>(login, encodedPassword);
+        UserData tuple = new UserData(nick, icePhone, userPhone, encodedPassword);
         String serializedTuple = null;
         try {
             serializedTuple = parsingService.serialize(tuple);
