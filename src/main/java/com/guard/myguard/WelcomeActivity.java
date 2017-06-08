@@ -1,47 +1,48 @@
 package com.guard.myguard;
 
 import android.app.Activity;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import com.guard.myguard.database.DBOpenHelper;
+import com.guard.myguard.services.impl.StoredLoginHandler;
+import com.guard.myguard.services.interfaces.LoginHandler;
 
-import static com.guard.myguard.utils.Utils.login;
+import static com.guard.myguard.utils.Utils.invokeStartActivity;
 
 public class WelcomeActivity extends Activity {
     private Button registerButton;
     private Button loginButton;
     private Button fingerprintButton;
     private DBOpenHelper openHelper;
-    private SharedPreferences settings;
+    private LoginHandler handler;
 
     private void initComponents() {
         this.registerButton = (Button) findViewById(R.id.register_button);
         this.loginButton = (Button) findViewById(R.id.login_button);
         this.fingerprintButton = (Button) findViewById(R.id.fingerprint_button);
-        this.settings = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
+        this.handler = new StoredLoginHandler(this);
     }
 
     private void setListeners() {
         this.loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                login(WelcomeActivity.this, LoginActivity.class);
+                invokeStartActivity(WelcomeActivity.this, LoginActivity.class);
             }
         });
         this.registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                login(WelcomeActivity.this, RegisterActivity.class);
+                invokeStartActivity(WelcomeActivity.this, RegisterActivity.class);
             }
         });
         this.fingerprintButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                login(WelcomeActivity.this, FingerprintActivity.class);
+                invokeStartActivity(WelcomeActivity.this, FingerprintActivity.class);
             }
         });
     }
@@ -55,8 +56,10 @@ public class WelcomeActivity extends Activity {
         initComponents();
         setListeners();
 
-        if(!settings.contains(this.getString(R.string.cred))){
+        if (!handler.isDataAvailable()) {
             fingerprintButton.setEnabled(false);
+
         }
+        Log.i("data", handler.getStoredCredentials().toString());
     }
 }

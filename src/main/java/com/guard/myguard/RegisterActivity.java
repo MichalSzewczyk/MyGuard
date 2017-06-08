@@ -12,7 +12,7 @@ import com.guard.myguard.database.DBOpenHelper;
 import com.guard.myguard.services.impl.StoredLoginHandler;
 import com.guard.myguard.services.interfaces.LoginHandler;
 
-import static com.guard.myguard.utils.Utils.login;
+import static com.guard.myguard.utils.Utils.invokeStartActivity;
 
 public class RegisterActivity extends Activity {
     private Button registerButton;
@@ -46,8 +46,8 @@ public class RegisterActivity extends Activity {
                         return;
                     }
                     openHelper.insertUserValue(nick.getText().toString(), password.getText().toString(), iceNumber.getText().toString(), phoneNumber.getText().toString());
-                    loginHandler.storeCredentials(nick.getText().toString(), password.getText().toString());
-                    login(RegisterActivity.this, MapsActivity.class);
+                    loginHandler.storeCredentials(nick.getText().toString(), iceNumber.getText().toString(), phoneNumber.getText().toString(), password.getText().toString());
+                    invokeStartActivity(RegisterActivity.this, MapsActivity.class);
                 } else {
                     Toast.makeText(RegisterActivity.this, validationMessage, Toast.LENGTH_SHORT).show();
                 }

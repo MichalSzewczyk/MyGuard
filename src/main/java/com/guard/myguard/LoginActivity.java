@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.guard.myguard.database.DBOpenHelper;
+import com.guard.myguard.model.db.UserData;
 import com.guard.myguard.services.impl.StoredLoginHandler;
 import com.guard.myguard.services.interfaces.LoginHandler;
 
@@ -19,23 +20,24 @@ public class LoginActivity extends Activity {
     private DBOpenHelper openHelper;
     private LoginHandler loginHandler;
 
-    private void initComponents(){
+    private void initComponents() {
         this.loginButton = (Button) findViewById(R.id.login_button);
         this.nick = (EditText) findViewById(R.id.nick_text);
         this.password = (EditText) findViewById(R.id.password_text);
         this.loginHandler = new StoredLoginHandler(this.getApplicationContext());
     }
 
-    private void setListeners(){
+    private void setListeners() {
         this.loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!openHelper.verifyCredentials(nick.getText().toString(), password.getText().toString(), openHelper.getAllData())){
+                UserData data = openHelper.getFullData(nick.getText().toString(), password.getText().toString(), openHelper.getAllData());
+                if (data == null) {
                     Toast.makeText(LoginActivity.this, "Invalid credentials", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                loginHandler.storeCredentials(nick.getText().toString(), password.getText().toString());
+                loginHandler.storeCredentials(data.getNick(), data.getIcePhone(), data.getUserPhone(), data.getPassword());
                 Intent registerIntent = new Intent(LoginActivity.this, MapsActivity.class);
                 finish();
                 startActivity(registerIntent);
