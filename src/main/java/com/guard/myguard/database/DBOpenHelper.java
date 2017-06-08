@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.guard.myguard.model.db.UserData;
+
 public class DBOpenHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "user_db";
@@ -80,8 +82,7 @@ public class DBOpenHelper extends SQLiteOpenHelper {
         return exists;
     }
 
-    public boolean verifyCredentials(String login, String password, Cursor cursor){
-        boolean exists = false;
+    public UserData getFullData(String login, String password, Cursor cursor){
         if (cursor.moveToFirst() ){
             String[] columnNames = cursor.getColumnNames();
             do {
@@ -89,14 +90,19 @@ public class DBOpenHelper extends SQLiteOpenHelper {
                         cursor.getColumnIndex(columnNames[0]));
                 String pass = cursor.getString(
                         cursor.getColumnIndex(columnNames[1]));
+                String iceNumber = cursor.getString(
+                        cursor.getColumnIndex(columnNames[2]));
+                String myNumber = cursor.getString(
+                        cursor.getColumnIndex(columnNames[3]));
                 Log.i("nick", nick +" "+login);
                 Log.i("pass", pass +" "+password);
+                Log.i("ice num", iceNumber);
+                Log.i("my num", myNumber);
                 if(nick.equals(login) && pass.equals(password)){
-                    exists = true;
-                    break;
+                    return new UserData(nick, iceNumber, myNumber, password);
                 }
             } while (cursor.moveToNext());
         }
-        return exists;
+        return null;
     }
 }

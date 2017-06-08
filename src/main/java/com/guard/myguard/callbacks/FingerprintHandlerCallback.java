@@ -10,11 +10,14 @@ import android.os.CancellationSignal;
 import android.support.v4.app.ActivityCompat;
 import android.widget.Toast;
 
+import com.guard.myguard.MapsActivity;
+import com.guard.myguard.model.db.UserData;
 import com.guard.myguard.services.impl.StoredLoginHandler;
 import com.guard.myguard.services.interfaces.LoginHandler;
 import com.guard.myguard.services.interfaces.ParsingService;
 import com.guard.myguard.tasks.UserLoginTask;
-import com.guard.myguard.utils.Tuple;
+
+import static com.guard.myguard.utils.Utils.invokeStartActivity;
 
 public class FingerprintHandlerCallback extends FingerprintManager.AuthenticationCallback {
 
@@ -64,13 +67,12 @@ public class FingerprintHandlerCallback extends FingerprintManager.Authenticatio
         pm.setComponentEnabledSetting(new ComponentName(context, activity.getClass()),
                 PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
 
-        Tuple<String, String> crud = loginHandler.getStoredCredentials();
-        if(crud == null){
+        UserData userData = loginHandler.getStoredCredentials();
+        if(userData == null){
             Toast.makeText(context, "Credential data unavailable. \nPlease log in for the first time.", Toast.LENGTH_LONG).show();
             return;
         }
-        UserLoginTask loginTask = new UserLoginTask(crud.getKey(), crud.getValue(), parsingService, activity);
-        loginTask.execute();
+        invokeStartActivity(activity, MapsActivity.class);
     }
 
 }

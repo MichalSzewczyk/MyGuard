@@ -20,11 +20,16 @@ public class UserData implements Serializable {
     private String icePhone;
     @JsonProperty("user_phone")
     private String userPhone;
+    @JsonProperty("password")
+    private String password;
 
-    public UserData(String nick, String icePhone, String userPhone) {
+    public UserData(){}
+
+    public UserData(String nick, String icePhone, String userPhone, String password) {
         this.nick = nick;
         this.icePhone = icePhone;
         this.userPhone = userPhone;
+        this.password = password;
     }
 
     @JsonProperty("nick")
@@ -55,5 +60,15 @@ public class UserData implements Serializable {
     @JsonProperty("user_phone")
     public void setUserPhone(String userPhone) {
         this.userPhone = userPhone;
+    }
+
+    @JsonProperty("password")
+    public String getPassword() {
+        return password;
+    }
+
+    @JsonProperty("password")
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
