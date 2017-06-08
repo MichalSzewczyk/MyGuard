@@ -1,4 +1,4 @@
-package com.guard.myguard.activities;
+package com.guard.myguard;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -7,7 +7,6 @@ import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 
-import com.guard.myguard.R;
 import com.guard.myguard.database.DBOpenHelper;
 
 import static com.guard.myguard.utils.Utils.login;
@@ -42,7 +41,7 @@ public class WelcomeActivity extends Activity {
         this.fingerprintButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                login(WelcomeActivity.this, AuthActivity.class);
+                login(WelcomeActivity.this, FingerprintActivity.class);
             }
         });
     }
