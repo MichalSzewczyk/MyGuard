@@ -36,10 +36,13 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.guard.myguard.model.db.UserData;
 import com.guard.myguard.services.impl.CrimesAnalyserImpl;
 import com.guard.myguard.services.impl.CrimesRestApiClientImpl;
+import com.guard.myguard.services.impl.StoredLoginHandler;
 import com.guard.myguard.services.interfaces.CrimesAnalyser;
 import com.guard.myguard.services.interfaces.CrimesRestApiClient;
+import com.guard.myguard.services.interfaces.LoginHandler;
 import com.guard.myguard.tasks.CrimesAsyncTask;
 
 import java.io.File;
@@ -71,11 +74,12 @@ public class MapsActivity extends FragmentActivity
     private RelativeLayout relativeLayout;
     private Button emergencyButton;
     private Button photoButton;
+    private LoginHandler loginHandler;
     //TODO: change the number
 
     int TAKE_PHOTO_CODE = 0;
     public static int count = 0;
-    private String emergencyContactNumber = "5554";
+    private UserData userData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +91,9 @@ public class MapsActivity extends FragmentActivity
         this.relativeLayout = (RelativeLayout) findViewById(R.id.alert_layout);
         this.emergencyButton = (Button) findViewById(R.id.sms_button);
         this.photoButton = (Button) findViewById(R.id.photo_button);
-
+        this.loginHandler = new StoredLoginHandler(this);
+        this.userData = loginHandler.getStoredCredentials();
+        Log.i("user", String.valueOf(userData));
 
         File newdir = new File(dir);
         newdir.mkdirs();
@@ -140,7 +146,7 @@ public class MapsActivity extends FragmentActivity
                     sendEmergencySms(
                             String.format(
                                     SMS_MESSAGE, mLastLocation.getLatitude(), mLastLocation.getLongitude())
-                            , emergencyContactNumber);
+                            , userData.getIcePhone());
                     Toast.makeText(MapsActivity.this, "Message sent.", Toast.LENGTH_LONG).show();
                 }
             }
@@ -172,16 +178,13 @@ public class MapsActivity extends FragmentActivity
                 return null;
             }
         });
-        //Initialize Google Play Services
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(this,
                     ACCESS_FINE_LOCATION)
                     == PackageManager.PERMISSION_GRANTED) {
-                //Location Permission already granted
                 buildGoogleApiClient();
                 mGoogleMap.setMyLocationEnabled(true);
             } else {
-                //Request Location Permission
                 checkLocationPermission();
             }
         } else {
@@ -202,8 +205,8 @@ public class MapsActivity extends FragmentActivity
     @Override
     public void onConnected(Bundle bundle) {
         mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(1000);
-        mLocationRequest.setFastestInterval(1000);
+        mLocationRequest.setInterval(10);
+        mLocationRequest.setFastestInterval(10);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
         if (ContextCompat.checkSelfPermission(this,
                 ACCESS_FINE_LOCATION)

@@ -42,11 +42,6 @@ public class FingerprintActivity extends Activity {
     private FingerprintManager.CryptoObject cryptoObject;
     private FingerprintManager fingerprintManager;
     private KeyguardManager keyguardManager;
-    private ParsingService parsingService;
-
-    public FingerprintActivity() {
-        this.parsingService = ParsingServiceFactory.getService(CUSTOM_SERVICE);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +78,7 @@ public class FingerprintActivity extends Activity {
                 if (initCipher()) {
                     cryptoObject = new FingerprintManager.CryptoObject(cipher);
 
-                    FingerprintHandlerCallback helper = new FingerprintHandlerCallback(this, parsingService, this);
+                    FingerprintHandlerCallback helper = new FingerprintHandlerCallback(this, this);
                     helper.startAuth(fingerprintManager, cryptoObject);
                 }
             }
