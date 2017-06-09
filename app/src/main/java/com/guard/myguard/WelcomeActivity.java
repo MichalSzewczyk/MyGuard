@@ -59,7 +59,8 @@ public class WelcomeActivity extends Activity {
         if (!handler.isDataAvailable()) {
             fingerprintButton.setEnabled(false);
 
+        } else {
+            Log.i("data", handler.getStoredCredentials().toString());
         }
-        Log.i("data", handler.getStoredCredentials().toString());
     }
 }

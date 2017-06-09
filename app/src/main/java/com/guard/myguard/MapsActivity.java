@@ -46,7 +46,9 @@ import java.io.File;
 import java.io.IOException;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.SEND_SMS;
+import static android.Manifest.permission_group.STORAGE;
 
 public class MapsActivity extends FragmentActivity
         implements OnMapReadyCallback,
@@ -89,20 +91,23 @@ public class MapsActivity extends FragmentActivity
 
         File newdir = new File(dir);
         newdir.mkdirs();
-
-        Button capture = (Button) findViewById(R.id.btnCapture);
         photoButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                if (checkSelfPermission(CAMERA)
+                        == PackageManager.PERMISSION_DENIED) {
 
-                // Here, the counter will be incremented each time, and the
-                // picture taken by camera will be stored as 1.jpg,2.jpg
-                // and likewise.
+                    Log.d("permission", "permission denied to CAMERA - requesting it");
+                    String[] permissions = {CAMERA, STORAGE};
+
+                    requestPermissions(permissions, 1);
+                }
                 count++;
                 String file = dir + count + ".jpg";
                 File newfile = new File(file);
                 try {
                     newfile.createNewFile();
                 } catch (IOException e) {
+                    Log.e("exception", "exception while creating new file");
                 }
 
                 Uri photoURI = FileProvider.getUriForFile(MapsActivity.this, MapsActivity.this.getApplicationContext().getPackageName() + ".provider", newfile);
@@ -117,17 +122,17 @@ public class MapsActivity extends FragmentActivity
         this.emergencyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (checkSelfPermission(SEND_SMS)
+                        == PackageManager.PERMISSION_DENIED) {
+
+                    Log.d("permission", "permission denied to SEND_SMS - requesting it");
+                    String[] permissions = {SEND_SMS};
+
+                    requestPermissions(permissions, 1);
+                }
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
 
-                    if (checkSelfPermission(SEND_SMS)
-                            == PackageManager.PERMISSION_DENIED) {
 
-                        Log.d("permission", "permission denied to SEND_SMS - requesting it");
-                        String[] permissions = {SEND_SMS};
-
-                        requestPermissions(permissions, 1);
-
-                    }
                 }
                 if (mLastLocation == null) {
                     Toast.makeText(MapsActivity.this, "Location unavailable.", Toast.LENGTH_LONG).show();
@@ -146,8 +151,6 @@ public class MapsActivity extends FragmentActivity
     @Override
     public void onPause() {
         super.onPause();
-
-        //stop location updates when Activity is no longer active
         if (mGoogleApiClient != null) {
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
         }
