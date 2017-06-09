@@ -47,7 +47,7 @@ public class RegisterActivity extends Activity {
                     }
                     openHelper.insertUserValue(nick.getText().toString(), password.getText().toString(), iceNumber.getText().toString(), phoneNumber.getText().toString());
                     loginHandler.storeCredentials(nick.getText().toString(), iceNumber.getText().toString(), phoneNumber.getText().toString(), password.getText().toString());
-                    invokeStartActivity(RegisterActivity.this, MapsActivity.class);
+                    invokeStartActivity(RegisterActivity.this, WelcomeActivity.class);
                 } else {
                     Toast.makeText(RegisterActivity.this, validationMessage, Toast.LENGTH_SHORT).show();
                 }

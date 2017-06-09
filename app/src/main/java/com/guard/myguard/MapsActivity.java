@@ -99,14 +99,7 @@ public class MapsActivity extends FragmentActivity
         newdir.mkdirs();
         photoButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (checkSelfPermission(CAMERA)
-                        == PackageManager.PERMISSION_DENIED) {
 
-                    Log.d("permission", "permission denied to CAMERA - requesting it");
-                    String[] permissions = {CAMERA, STORAGE};
-
-                    requestPermissions(permissions, 1);
-                }
                 count++;
                 String file = dir + count + ".jpg";
                 File newfile = new File(file);
@@ -128,14 +121,7 @@ public class MapsActivity extends FragmentActivity
         this.emergencyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (checkSelfPermission(SEND_SMS)
-                        == PackageManager.PERMISSION_DENIED) {
 
-                    Log.d("permission", "permission denied to SEND_SMS - requesting it");
-                    String[] permissions = {SEND_SMS};
-
-                    requestPermissions(permissions, 1);
-                }
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
 
 
