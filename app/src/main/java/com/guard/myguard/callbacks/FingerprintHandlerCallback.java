@@ -24,13 +24,11 @@ public class FingerprintHandlerCallback extends FingerprintManager.Authenticatio
     private CancellationSignal cancellationSignal;
     private Context context;
     private LoginHandler loginHandler;
-    private ParsingService parsingService;
     private Activity activity;
 
-    public FingerprintHandlerCallback(Context mContext, ParsingService parsingService, Activity activity) {
+    public FingerprintHandlerCallback(Context mContext, Activity activity) {
         this.context = mContext;
         this.loginHandler = new StoredLoginHandler(mContext);
-        this.parsingService = parsingService;
         this.activity = activity;
     }
 
